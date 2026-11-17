@@ -24,6 +24,12 @@ mkdir -p "${HOME}/.local/bin"
 for entry in "${DOT_CONFIG_DIR}"/*; do
     [ -e "${entry}" ] || continue
     name="$(basename "${entry}")"
+    
+    # Skip Code and Cursor in bulk loop; they are handled specially below to prevent cache pollution
+    if [ "${name}" == "Code" ] || [ "${name}" == "Cursor" ]; then
+        continue
+    fi
+    
     dest="${HOME}/.config/${name}"
 
     if [ "${DEPLOY_METHOD}" == "symlink" ]; then
@@ -37,11 +43,27 @@ for entry in "${DOT_CONFIG_DIR}"/*; do
     fi
 done
 
-# 3. Handle nested configurations like Code/User/settings.json
+# 3. Handle Editor User configurations (prevents IDE cache pollution into dotfiles repo)
 if [ -f "${DOT_CONFIG_DIR}/Code/User/settings.json" ]; then
     mkdir -p "${HOME}/.config/Code/User"
-    cp "${DOT_CONFIG_DIR}/Code/User/settings.json" "${HOME}/.config/Code/User/settings.json"
-    log_ok "Configured: ~/.config/Code/User/settings.json"
+    if [ "${DEPLOY_METHOD}" == "symlink" ]; then
+        ln -sf "${DOT_CONFIG_DIR}/Code/User/settings.json" "${HOME}/.config/Code/User/settings.json"
+        log_ok "Symlinked: ~/.config/Code/User/settings.json"
+    else
+        cp "${DOT_CONFIG_DIR}/Code/User/settings.json" "${HOME}/.config/Code/User/settings.json"
+        log_ok "Copied: ~/.config/Code/User/settings.json"
+    fi
+fi
+
+if [ -f "${DOT_CONFIG_DIR}/Cursor/User/settings.json" ]; then
+    mkdir -p "${HOME}/.config/Cursor/User"
+    if [ "${DEPLOY_METHOD}" == "symlink" ]; then
+        ln -sf "${DOT_CONFIG_DIR}/Cursor/User/settings.json" "${HOME}/.config/Cursor/User/settings.json"
+        log_ok "Symlinked: ~/.config/Cursor/User/settings.json"
+    else
+        cp "${DOT_CONFIG_DIR}/Cursor/User/settings.json" "${HOME}/.config/Cursor/User/settings.json"
+        log_ok "Copied: ~/.config/Cursor/User/settings.json"
+    fi
 fi
 
 # 4. Deploy home dotfiles

@@ -36,7 +36,9 @@ CONFIG_TARGETS=(
     "mimeapps.list"
     "user-dirs.dirs"
     "user-dirs.locale"
+    "swaync"
     "Code/User/settings.json"
+    "Cursor/User/settings.json"
 )
 
 for target in "${CONFIG_TARGETS[@]}"; do

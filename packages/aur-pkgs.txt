@@ -13,3 +13,6 @@ elephant-providerlist
 elephant-runner
 elephant-symbols
 elephant-websearch
+
+# Session & Logout
+wlogout

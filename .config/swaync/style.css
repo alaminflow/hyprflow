@@ -1,0 +1,149 @@
+/* TokyoNight SwayNC Style */
+
+@define-color cc-bg rgba(26, 27, 38, 0.90);
+@define-color noti-bg rgba(36, 40, 59, 0.95);
+@define-color noti-bg-darker rgba(26, 27, 38, 0.95);
+@define-color noti-bg-hover rgba(47, 53, 78, 0.95);
+@define-color noti-bg-focus rgba(65, 72, 104, 0.95);
+@define-color noti-close-bg rgba(255, 255, 255, 0.1);
+@define-color noti-close-bg-hover rgba(247, 118, 142, 0.8);
+@define-color text-color #c0caf5;
+@define-color text-color-disabled #565f89;
+@define-color bg-selected #7aa2f7;
+
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-weight: bold;
+}
+
+.control-center {
+  background: @cc-bg;
+  border: 1px solid rgba(122, 162, 247, 0.3);
+  border-radius: 12px;
+  padding: 12px;
+  color: @text-color;
+}
+
+.notification-row {
+  outline: none;
+  margin: 6px 0;
+}
+
+.notification-row:focus,
+.notification-row:hover {
+  background: transparent;
+}
+
+.notification {
+  background: @noti-bg;
+  border: 1px solid rgba(122, 162, 247, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+  color: @text-color;
+}
+
+.notification-content {
+  background: transparent;
+  padding: 6px;
+}
+
+.close-button {
+  background: @noti-close-bg;
+  color: @text-color;
+  text-shadow: none;
+  padding: 4px;
+  border-radius: 100%;
+  margin-top: 5px;
+  margin-right: 5px;
+  box-shadow: none;
+  border: none;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.close-button:hover {
+  box-shadow: none;
+  background: @noti-close-bg-hover;
+  transition: all 0.2s ease-in-out;
+}
+
+.notification-default-action,
+.notification-action {
+  padding: 4px;
+  margin: 0;
+  box-shadow: none;
+  background: @noti-bg;
+  border: 1px solid rgba(122, 162, 247, 0.2);
+  color: @text-color;
+}
+
+.notification-default-action:hover,
+.notification-action:hover {
+  background: @noti-bg-hover;
+}
+
+.summary {
+  font-size: 14px;
+  font-weight: bold;
+  color: #7aa2f7;
+}
+
+.time {
+  font-size: 11px;
+  color: @text-color-disabled;
+  margin-right: 18px;
+}
+
+.body {
+  font-size: 12px;
+  color: @text-color;
+}
+
+/* Control Center Widgets */
+.widget-title {
+  color: #7aa2f7;
+  padding: 8px;
+  margin: 4px;
+  font-size: 1.2rem;
+}
+
+.widget-title > button {
+  font-size: 0.9rem;
+  color: @text-color;
+  background: @noti-bg;
+  border: 1px solid rgba(122, 162, 247, 0.2);
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+
+.widget-title > button:hover {
+  background: @noti-bg-hover;
+}
+
+.widget-dnd {
+  background: @noti-bg;
+  padding: 8px;
+  margin: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(122, 162, 247, 0.2);
+}
+
+.widget-dnd > switch {
+  font-size: initial;
+  border-radius: 8px;
+  background: @noti-bg-darker;
+  border: 1px solid rgba(122, 162, 247, 0.2);
+}
+
+.widget-dnd > switch:checked {
+  background: #7aa2f7;
+}
+
+.widget-mpris {
+  background: @noti-bg;
+  padding: 10px;
+  margin: 6px 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(122, 162, 247, 0.2);
+  color: @text-color;
+}
