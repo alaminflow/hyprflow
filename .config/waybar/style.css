@@ -1,0 +1,126 @@
+/* ~/.config/waybar/style.css */
+
+/* ── Palette ─────────────────────────────────────────────────────────────── */
+/* bg=#1a1b26  bg2=#24283b  fg=#c0caf5  blue=#7aa2f7  magenta=#bb9af7       */
+/* dim=#565f89  red=#f7768e  green=#9ece6a  yellow=#e0af68                   */
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(26, 27, 38, 0.85); /* Glassmorphism */
+    color: #c0caf5;
+    transition-property: background-color;
+    transition-duration: .5s;
+    border-bottom: 2px solid rgba(122, 162, 247, 0.1);
+}
+
+/* ── Workspaces ───────────────────────────────────────────────────────────── */
+#workspaces {
+    background: #24283b;
+    margin: 4px;
+    padding: 0px 5px;
+    border-radius: 15px;
+    border: 1px solid rgba(122, 162, 247, 0.2);
+}
+
+#workspaces button {
+    padding: 0px 10px;
+    color: #565f89;
+    background: transparent;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(.55,-0.04,.3,1.44);
+}
+
+#workspaces button.persistent {
+    color: #565f89; 
+}
+
+#workspaces button.active {
+    color: #7aa2f7;
+    background: rgba(122, 162, 247, 0.15);
+    min-width: 30px; /* Makes the active number stand out */
+}
+
+#workspaces button:hover {
+    color: #c0caf5;
+    background: rgba(122, 162, 247, 0.1);
+}
+
+/* ── Center Clock & Notification Icons (The Pill) ────────────────────────── */
+#clock, #custom-notification {
+    color: #7aa2f7;
+    background: linear-gradient(45deg, #24283b 0%, #1a1b26 100%);
+    border: 1px solid rgba(122, 162, 247, 0.2);
+    border-radius: 15px;
+    padding: 0 15px;
+    margin: 4px 4px;
+}
+
+#custom-notification {
+    color: #bb9af7; /* Magenta accent for the center notification bell */
+}
+
+/* ── Right Modules Styling ───────────────────────────────────────────────── */
+#tray, #idle_inhibitor, #network, #bluetooth, #backlight, #wireplumber, #battery, #custom-tuned, #custom-power {
+    background: #24283b;
+    padding: 0 12px;
+    margin: 4px 2px;
+    border-radius: 10px;
+    border-bottom: 2px solid rgba(0,0,0,0.2); /* Subtle depth shadow */
+}
+
+/* Module Specific Accents matching your palette style */
+#idle_inhibitor { color: #e0af68; }
+#network        { color: #9ece6a; }
+#bluetooth      { color: #b4f9f8; } 
+#backlight      { color: #e0af68; }
+#wireplumber    { color: #7aa2f7; }
+#custom-tuned   { color: #b4f9f8; } 
+
+#wireplumber.muted {
+    color: #f7768e;
+}
+
+#battery { color: #9ece6a; }
+#battery.charging { color: #73daca; }
+#battery.warning  { color: #ff9e64; }
+#battery.critical:not(.charging) { color: #f7768e; animation: blink 1s steps(5, start) infinite; }
+
+#custom-power {
+    color: #f7768e;
+    background: rgba(247, 118, 142, 0.1);
+    border: 1px solid rgba(247, 118, 142, 0.2);
+    margin-right: 8px;
+    padding: 0 15px;
+}
+
+#custom-power:hover {
+    background: #f7768e;
+    color: #1a1b26;
+}
+
+/* ── Animations ────────────────────────────────────────────────────────────
+@keyframes blink {
+    to {
+        background-color: #f7768e;
+        color: #1a1b26;
+    }
+}
+*/
+/* ── Tooltips ────────────────────────────────────────────────────────────── */
+tooltip {
+    background: #1a1b26;
+    border-radius: 10px;
+    border: 1px solid #7aa2f7;
+}
+tooltip label {
+    color: #c0caf5;
+    padding: 5px;
+}

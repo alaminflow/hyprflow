@@ -1,0 +1,19 @@
+# Logs & Temporary files
+install.log
+*.log
+*.tmp
+*.bak
+*~
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Secrets & Local credentials guard
+*.key
+*.pem
+*.kdbx
+*.sqlite
+*.db
+.env*
+credential*

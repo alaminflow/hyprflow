@@ -1,0 +1,75 @@
+# Core Hyprland & Wayland Compositor
+hyprland
+hypridle
+hyprlock
+hyprpaper
+xdg-desktop-portal-hyprland
+uwsm
+
+# Bar & Notifications
+waybar
+swaync
+
+# Audio & Media Controls
+pipewire
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+wireplumber
+gst-plugin-pipewire
+playerctl
+pavucontrol
+
+# Utilities & Applets
+network-manager-applet
+networkmanager
+blueman
+bluez
+bluez-utils
+brightnessctl
+grim
+slurp
+swappy
+wl-clipboard
+cliphist
+polkit-gnome
+udiskie
+gvfs
+gvfs-mtp
+gvfs-smb
+ntfs-3g
+dconf
+
+# Terminals & Shell
+ghostty
+kitty
+zsh
+zsh-autosuggestions
+zsh-syntax-highlighting
+starship
+fastfetch
+btop
+htop
+fzf
+
+# File Management & Viewers
+thunar
+thunar-archive-plugin
+tumbler
+ffmpegthumbnailer
+file-roller
+imv
+swayimg
+mpv
+featherpad
+zathura
+zathura-pdf-mupdf
+
+# Theming, Fonts & Icons
+papirus-icon-theme
+ttf-jetbrains-mono-nerd
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+ttf-nerd-fonts-symbols-mono
+nwg-look

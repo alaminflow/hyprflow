@@ -1,0 +1,3 @@
+# Optional Recommended Productivity & Development Apps
+brave-bin
+visual-studio-code-bin

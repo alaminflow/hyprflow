@@ -1,0 +1,15 @@
+# Desktop Theme & Cursor
+tokyonight-gtk-theme-git
+bibata-cursor-theme
+
+# Application Launcher & Companion Daemons
+walker
+elephant
+elephant-calc
+elephant-clipboard
+elephant-desktopapplications
+elephant-files
+elephant-providerlist
+elephant-runner
+elephant-symbols
+elephant-websearch
