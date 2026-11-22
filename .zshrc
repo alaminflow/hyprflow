@@ -11,7 +11,7 @@ autoload -Uz compinit && compinit
 zstyle ':completion:*' menu select
 
 # --- Launch Starship Prompt ---
-if command -v starship &>/dev/null; then
+if [[ "$TERM" != "dumb" ]] && command -v starship &>/dev/null; then
     eval "$(starship init zsh)"
 fi
 

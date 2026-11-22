@@ -15,7 +15,7 @@ DEPLOY_METHOD="${1:-copy}" # "copy" or "symlink"
 
 log_info "Deploying dotfiles using method: ${DEPLOY_METHOD}"
 
-# 1. Create target directories
+# 1. Ensure required target directories exist
 mkdir -p "${HOME}/.config"
 mkdir -p "${HOME}/Pictures/Wallpapers"
 mkdir -p "${HOME}/.local/bin"
@@ -25,7 +25,7 @@ for entry in "${DOT_CONFIG_DIR}"/*; do
     [ -e "${entry}" ] || continue
     name="$(basename "${entry}")"
     
-    # Skip Code and Cursor in bulk loop; they are handled specially below to prevent cache pollution
+    # Skip Code and Cursor in bulk loop; handled specially to isolate settings from runtime caches
     if [ "${name}" == "Code" ] || [ "${name}" == "Cursor" ]; then
         continue
     fi
@@ -34,7 +34,7 @@ for entry in "${DOT_CONFIG_DIR}"/*; do
 
     if [ "${DEPLOY_METHOD}" == "symlink" ]; then
         rm -rf "${dest}"
-        ln -sf "${entry}" "${dest}"
+        ln -sfn "${entry}" "${dest}"
         log_ok "Symlinked: ~/.config/${name} -> ${entry}"
     else
         rm -rf "${dest}"
@@ -83,41 +83,46 @@ for file in "${HOME_FILES[@]}"; do
     fi
 done
 
-# 5. Deploy curated wallpapers
-if [ -d "${SCRIPT_DIR}/assets/wallpapers" ]; then
-    log_info "Deploying wallpapers to: ${HOME}/Pictures/Wallpapers/"
-    cp -n "${SCRIPT_DIR}/assets/wallpapers"/* "${HOME}/Pictures/Wallpapers/" 2>/dev/null || true
+# 5. Deploy curated wallpapers (nullglob prevents literal * if empty)
+shopt -s nullglob
+WALLPAPER_FILES=("${SCRIPT_DIR}/assets/wallpapers"/*)
+shopt -u nullglob
+
+if [ ${#WALLPAPER_FILES[@]} -gt 0 ]; then
+    log_info "Deploying ${#WALLPAPER_FILES[@]} wallpapers to: ${HOME}/Pictures/Wallpapers/"
+    for wp in "${WALLPAPER_FILES[@]}"; do
+        dest_wp="${HOME}/Pictures/Wallpapers/$(basename "${wp}")"
+        if [ ! -f "${dest_wp}" ]; then
+            cp "${wp}" "${dest_wp}"
+        fi
+    done
     log_ok "Wallpapers deployed successfully!"
 fi
 
-# 6. Replace __HOME__ path placeholders in deployed hypr configs
-if [ -f "${HOME}/.config/hypr/hyprpaper.conf" ]; then
-    sed -i "s|__HOME__|${HOME}|g" "${HOME}/.config/hypr/hyprpaper.conf"
-fi
+# 6. Ensure executable permissions for all user scripts
+find "${HOME}/.config/hypr" -type f -name "*.sh" -exec chmod +x {} + 2>/dev/null || true
 
-# 7. Ensure executable permissions for scripts
-if [ -d "${HOME}/.config/hypr/scripts" ]; then
-    chmod +x "${HOME}/.config/hypr/scripts"/* 2>/dev/null || true
-fi
-
-# 8. Load dconf settings (GTK theme, fonts, icons, dark mode)
+# 7. Load dconf settings (GTK theme, fonts, icons, dark mode)
 if command -v dconf &>/dev/null && [ -f "${SCRIPT_DIR}/dconf/dconf-settings.ini" ]; then
     log_info "Applying desktop & theme settings via dconf..."
-    dconf load / < "${SCRIPT_DIR}/dconf/dconf-settings.ini"
-    log_ok "dconf settings applied successfully!"
+    if dconf load / < "${SCRIPT_DIR}/dconf/dconf-settings.ini" 2>/dev/null; then
+        log_ok "dconf settings applied successfully!"
+    else
+        log_warn "dconf settings deferred (no active D-Bus session in this environment; will apply on GUI login)."
+    fi
 fi
 
-# 9. Update XDG user directories
+# 8. Update XDG user directories (graceful fallback)
 if command -v xdg-user-dirs-update &>/dev/null; then
-    xdg-user-dirs-update
+    xdg-user-dirs-update 2>/dev/null || true
 fi
 
-# 10. Enable systemd user services
+# 9. Enable systemd user services (graceful fallback)
 if command -v systemctl &>/dev/null; then
     systemctl --user daemon-reload 2>/dev/null || true
     if [ -f "${HOME}/.config/systemd/user/elephant.service" ]; then
         systemctl --user enable elephant.service 2>/dev/null || true
-        log_ok "Enabled elephant.service"
+        log_ok "Configured elephant.service"
     fi
 fi
 
