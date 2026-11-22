@@ -27,6 +27,8 @@ blueman
 bluez
 bluez-utils
 brightnessctl
+libnotify
+jq
 grim
 slurp
 swappy

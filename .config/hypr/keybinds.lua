@@ -16,7 +16,7 @@ hl.bind("SUPER + V", hl.dsp.exec_cmd("cliphist list | walker --stdin | cliphist 
 hl.bind("Print", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | swappy -f -]]))
 
 -- Wallpaper randomizer
-hl.bind("SUPER + SHIFT + W", hl.dsp.exec_cmd("~/.config/hypr/scripts/random_wall.sh"))
+hl.bind("SUPER + SHIFT + W", hl.dsp.exec_cmd("bash ~/.config/hypr/scripts/random_wall.sh"))
 
 -- Compositor Window Management Actions
 hl.bind("SUPER + Q", hl.dsp.window.close())
