@@ -53,6 +53,11 @@ Includes an automated, interactive installer script with safety checks, timestam
 | `Super + [1-9, 0]` | Workspace 1-10 | Switch workspace |
 | `Super + Shift + [1-9, 0]` | Move Workspace | Move active window to workspace |
 | `Print` | Screenshot Region | Select area (`slurp`) and edit with `swappy` |
+| `Super + Ctrl + Left/Right/Up/Down` | Resize Window | Smooth repeating window resize |
+| `Super + M` | Center Window | Centers floating window on screen |
+| `Alt + Tab` | Cycle Windows | Cycles focus to next window |
+| `Super + N` | Notification Center | Toggles SwayNC control center |
+| `Super + Shift + B` | Toggle Waybar | Hides or reveals top Waybar |
 | `Super + Left/Right/Up/Down` | Window Focus | Move focus in direction |
 | `Super + Shift + Arrows` | Move Window | Move window position |
 | `Super + Mouse Drag` | Move Floating Window | Left mouse drag |
