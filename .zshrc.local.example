@@ -1,0 +1,21 @@
+# ==============================================================================
+# ~/.zshrc.local - Machine-Specific Overrides & Secrets
+# ==============================================================================
+# Copy this file to ~/.zshrc.local and customize it.
+# This file is intentionally ignored by git so secrets/tokens never leak.
+# ==============================================================================
+
+# Private Tokens & API Keys (DO NOT COMMIT)
+# export GITHUB_TOKEN="ghp_your_personal_access_token_here"
+# export OPENAI_API_KEY="sk-..."
+# export ANTHROPIC_API_KEY="sk-ant-..."
+# export AWS_PROFILE="work"
+
+# Work / Machine Specific Paths
+# export ANDROID_HOME="$HOME/Android/Sdk"
+# export PATH="$ANDROID_HOME/platform-tools:$PATH"
+# export GOPATH="$HOME/go"
+# export PATH="$GOPATH/bin:$PATH"
+
+# Custom Machine Aliases
+# alias workvpn="sudo openconnect ..."

@@ -54,6 +54,13 @@ btop
 htop
 fzf
 
+# Modern Developer CLI Tools
+zoxide
+ripgrep
+bat
+eza
+direnv
+
 # File Management & Viewers
 thunar
 thunar-archive-plugin

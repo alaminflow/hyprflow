@@ -17,3 +17,7 @@ Thumbs.db
 *.db
 .env*
 credential*
+
+# Local machine overrides & secrets
+.zshrc.local
+.bashrc.local
