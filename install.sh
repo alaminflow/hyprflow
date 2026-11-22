@@ -2,12 +2,35 @@
 # ==============================================================================
 #  Arch Linux + Hyprland (TokyoNight) Dotfiles Automated Installer
 # ==============================================================================
-#  GitHub: Ready for deployment on clean Arch Linux installations
+#  GitHub: https://github.com/alaminflow/hyprflow
 # ==============================================================================
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Self-bootstrap if executed directly via curl/web pipe without cloned repo
+if [ ! -d "${SCRIPT_DIR}/.config" ]; then
+    REPO_URL="https://github.com/alaminflow/hyprflow.git"
+    TARGET_DIR="${HOME}/.dotfiles"
+    echo -e "\033[1;34m[INFO]\033[0m Direct web execution detected. Bootstrapping hyprflow..."
+    if ! command -v git &>/dev/null; then
+        sudo pacman -S --needed --noconfirm git
+    fi
+    if [ ! -d "${TARGET_DIR}/.git" ]; then
+        git clone "${REPO_URL}" "${TARGET_DIR}"
+    else
+        git -C "${TARGET_DIR}" pull --rebase 2>/dev/null || true
+    fi
+    cd "${TARGET_DIR}"
+    chmod +x install.sh scripts/*.sh .config/hypr/scripts/*.sh 2>/dev/null || true
+    if [ -e /dev/tty ]; then
+        exec "${TARGET_DIR}/install.sh" "$@" < /dev/tty
+    else
+        exec "${TARGET_DIR}/install.sh" "$@"
+    fi
+fi
+
 LOG_FILE="${HOME}/.dotfiles_install.log"
 if ! touch "${LOG_FILE}" 2>/dev/null; then
     LOG_FILE="/tmp/dotfiles_install.log"
@@ -79,9 +102,19 @@ preflight_checks() {
     log_ok "Pre-flight checks passed."
 }
 
+prompt_read() {
+    local prompt_msg="$1"
+    local var_name="$2"
+    if [ -e /dev/tty ]; then
+        read -rp "${prompt_msg}" "${var_name}" < /dev/tty
+    else
+        read -rp "${prompt_msg}" "${var_name}"
+    fi
+}
+
 prompt_deploy_method() {
     local default_method="copy"
-    if [ ! -t 0 ]; then
+    if [ ! -t 0 ] && [ ! -e /dev/tty ]; then
         "${SCRIPT_DIR}/scripts/deploy_configs.sh" "${default_method}"
         return
     fi
@@ -90,7 +123,7 @@ prompt_deploy_method() {
     echo -e "${C_BOLD}Select Deployment Method:${C_RESET}"
     echo -e "  ${C_CYAN}[1]${C_RESET} Copy configs (Safe, recommended for independent edits)"
     echo -e "  ${C_CYAN}[2]${C_RESET} Symlink configs (Changes sync automatically with git repo)"
-    read -rp "Choice [1/2] (Default 1): " deploy_choice
+    prompt_read "Choice [1/2] (Default 1): " deploy_choice
     local method="copy"
     if [ "${deploy_choice:-1}" == "2" ]; then
         method="symlink"
@@ -119,9 +152,9 @@ run_full_installation() {
     log_info "Step 4/4: Finalizing system environment..."
     if command -v zsh &>/dev/null; then
         current_shell="$(basename "${SHELL:-bash}")"
-        if [ "${current_shell}" != "zsh" ] && [ -t 0 ]; then
+        if [ "${current_shell}" != "zsh" ]; then
             echo ""
-            read -rp "Change default shell to zsh? [Y/n] " set_zsh
+            prompt_read "Change default shell to zsh? [Y/n] " set_zsh
             if [[ ! "${set_zsh:-y}" =~ ^[Nn] ]]; then
                 chsh -s "$(which zsh)" 2>/dev/null || true
                 log_ok "Default shell set to zsh!"
@@ -148,7 +181,7 @@ main_menu() {
     echo -e "  ${C_CYAN}[5]${C_RESET} Exit"
     echo ""
     
-    if [ ! -t 0 ]; then
+    if [ ! -t 0 ] && [ ! -e /dev/tty ]; then
         log_info "Non-interactive environment detected. Defaulting to Deploy Dotfiles Only."
         preflight_checks
         "${SCRIPT_DIR}/scripts/backup.sh"
@@ -156,7 +189,7 @@ main_menu() {
         return
     fi
 
-    read -rp "Enter your choice [1-5]: " choice
+    prompt_read "Enter your choice [1-5]: " choice
 
     case "${choice:-1}" in
         1)

@@ -17,6 +17,16 @@ if [ "${1:-}" == "--noconfirm" ] || [ "${1:-}" == "-y" ] || [ ! -t 0 ]; then
     AUTO_YES=true
 fi
 
+prompt_read() {
+    local prompt_msg="$1"
+    local var_name="$2"
+    if [ -e /dev/tty ]; then
+        read -rp "${prompt_msg}" "${var_name}" < /dev/tty
+    else
+        read -rp "${prompt_msg}" "${var_name}"
+    fi
+}
+
 # 1. Root check (must NOT run as root, needs normal user with sudo)
 if [ "$(id -u)" -eq 0 ]; then
     log_err "Please do NOT run this script as root! Run as a normal user with sudo privileges."
@@ -58,7 +68,7 @@ if [ -z "${AUR_HELPER}" ]; then
     log_warn "No AUR helper (yay/paru) detected."
     install_yay="y"
     if [ "${AUTO_YES}" = false ]; then
-        read -rp "Would you like to automatically bootstrap yay-bin from AUR? [Y/n] " input_yay
+        prompt_read "Would you like to automatically bootstrap yay-bin from AUR? [Y/n] " input_yay
         install_yay="${input_yay:-y}"
     fi
 
@@ -134,7 +144,7 @@ install_optional_apps() {
     install_apps="n"
     if [ "${AUTO_YES}" = false ]; then
         echo ""
-        read -rp "Would you like to install optional apps (Brave, VS Code)? [y/N] " input_apps
+        prompt_read "Would you like to install optional apps (Brave, VS Code)? [y/N] " input_apps
         install_apps="${input_apps:-n}"
     fi
 

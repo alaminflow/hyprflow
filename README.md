@@ -63,33 +63,49 @@ Includes an automated, interactive installer script with safety checks, timestam
 
 ## 🚀 Installation on a New System
 
-### Step 1: Install Arch Linux Base
-Install Arch Linux using `archinstall` or manually. Ensure your network connection is active.
+### ⚡ Option A: Quick One-Liner (Fastest & Recommended)
 
-### Step 2: Clone Dotfiles
-Clone your repository into your home directory:
+Simply open a terminal on your fresh Arch Linux install and run:
 
 ```bash
-git clone https://github.com/<your-username>/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/alaminflow/hyprflow/main/bootstrap.sh)"
 ```
 
-### Step 3: Run the Installer
-
-Make sure the installer has execute permissions and run it as your **normal user** (never with `sudo` directly):
+Or using `install.sh` directly:
 
 ```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/alaminflow/hyprflow/main/install.sh)"
+```
+
+> **What the one-liner does automatically:**
+> 1. Verifies you are running on an Arch Linux system as a non-root user.
+> 2. Automatically installs `git` if missing.
+> 3. Clones `https://github.com/alaminflow/hyprflow.git` to `~/.dotfiles`.
+> 4. Launches the interactive setup wizard with safety backups, package installation, and wallpaper configuration.
+
+---
+
+### 📦 Option B: Manual Installation
+
+If you prefer to clone and inspect the repository first:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/alaminflow/hyprflow.git ~/.dotfiles
+cd ~/.dotfiles
+
+# 2. Run the installer
 chmod +x install.sh
 ./install.sh
 ```
 
-The interactive installer will provide options:
+### Installation Modes in Wizard
 - **`[1] Full Installation`**: Creates a backup, installs all official + AUR packages, deploys dotfiles, copies wallpapers, sets up themes/dconf, and configures the default shell.
 - **`[2] Deploy Dotfiles Only`**: Backs up existing configs and lets you choose between **Copy** or **Symlink**.
 - **`[3] Install Packages Only`**: Installs official packages via `pacman` and AUR packages via `yay`/`paru`.
 - **`[4] Restore Previous Backup`**: Easily rolls back to your pre-install state.
 
-### Unattended / Non-Interactive Mode
+### Unattended / Automation Mode
 To run without interactive prompts:
 ```bash
 ./install.sh --noconfirm
